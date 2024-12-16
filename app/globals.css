@@ -1,0 +1,9 @@
+/* globals.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-geist-sans), var(--font-geist-mono), sans-serif;
+}
