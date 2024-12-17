@@ -1,12 +1,12 @@
-"use client";
-import { useState } from "react";
-import Image from "next/image";
+// "use client";
+// import { useState } from "react";
+// import Image from "next/image";
 import Images from "./Images";
 import React from "react";
 import { primaryFontColor, secondaryFontColor } from "@/utils/styles";
 
 const ProductDetails = ({ handleScrollToSection }) => {
-  const [currentImage, setCurrentImage] = useState(0);
+  // const [currentImage, setCurrentImage] = useState(0);
 
   // Sample images for the carousel
   const images = [
@@ -30,9 +30,9 @@ const ProductDetails = ({ handleScrollToSection }) => {
     "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi16.jpeg",
   ];
 
-  function getImage(currentImage) {
-    return images[currentImage];
-  }
+  // function getImage(currentImage) {
+  //   return images[currentImage];
+  // }
 
   const currentDate = new Date();
   const deliveryDate = new Date(currentDate);
