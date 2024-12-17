@@ -27,15 +27,9 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const { imagesFolder } = body;
-    if (!imagesFolder) {
-      throw new Error("Missing images folder URL");
-    }
-
     const order = validateOrder(body);
 
     // Attach the images folder URL
-    order.imagesFolder = imagesFolder;
 
     const client = await clientPromise;
     const db = client.db("jeweltine");

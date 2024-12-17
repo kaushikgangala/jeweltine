@@ -6,31 +6,36 @@ import { useEffect, useState } from "react";
 
 const ThankYouPage = () => {
   const [customerData, setCustomerData] = useState(null);
-  const [productData, setProductData] = useState([]);
+  const [productData, setProductData] = useState(null);
 
   useEffect(() => {
-    setCustomerData(JSON.parse(localStorage.getItem("customer")));
-    setProductData(JSON.parse(localStorage.getItem("customization")));
     async function metaPurchaseEvent() {
+      const customer = JSON.parse(localStorage.getItem("customer"));
+      const customization = JSON.parse(localStorage.getItem("customization"));
+
+      if (customer) setCustomerData(customer);
+      if (customization) setProductData(customization);
+
       await fetch("/api/meta/purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          value: productData
-            .reduce((acc, curr) => acc + curr.price, 0)
-            .toFixed(2),
-          quantity: productData.quantity,
-          email: customerData.email,
-          phone: customerData.phone,
+          value: customization
+            ? (customization.Price * customization.quantity).toFixed(2)
+            : 0,
+          quantity: customization?.quantity || 0,
+          email: customer?.email || "",
+          phone: customer?.phone || "",
           fbc: sessionStorage.getItem("_fbc"),
           fbp: sessionStorage.getItem("_fbp"),
-          totalAmount: productData
-            .reduce((acc, curr) => acc + curr.price, 0)
-            .toFixed(2),
-          qty: productData.quantity,
+          totalAmount: customization
+            ? (customization.Price * customization.quantity).toFixed(2)
+            : 0,
+          qty: customization?.quantity || 0,
         }),
       });
     }
+
     metaPurchaseEvent();
   }, []);
 
@@ -46,70 +51,98 @@ const ThankYouPage = () => {
 
   return (
     <>
-      <div className="thank-you-container bg-red-50 min-h-screen flex items-center justify-center">
-        <div className="bg-white  p-8 w-full max-w-3xl ">
+      <div className="thank-you-container bg-gray-50 min-h-screen flex items-center justify-center px-4">
+        <div className="bg-white p-6 w-full max-w-3xl rounded-lg shadow-lg">
           <h1
-            className="text-3xl font-extrabold text-center mb-4"
-            style={{ color: primaryFontColor }}
+            className="text-4xl font-bold text-center mb-6"
+            style={{ color: primaryFontColor || "#333" }}
           >
-            🎄 Thank You for Your Order! 🎁
+            Thank You for Your Order!
           </h1>
-          <p className="text-lg text-center text-gray-700 mb-6">
-            Your order has been successfully placed! Here are the details:
+          <p className="text-lg text-center text-gray-600 mb-8">
+            Your order has been successfully placed. Here are your order
+            details:
           </p>
-          <div className="my-6">
-            <p className="text-lg font-medium">
+
+          {/* Delivery Date Section */}
+          <div className="mb-6">
+            <p className="text-lg font-medium text-gray-700">
               Expected Delivery:
-              <span
-                className="block text-2xl font-bold"
-                style={{ color: "#ff0084" }}
-              >
+              <span className="block text-2xl font-bold  mt-1">
                 {formattedDeliveryDate}
               </span>
             </p>
           </div>
 
-          <div className="order-details space-y-6">
-            {customerData && (
-              <div className=" p-4 rounded-lg shadow-inner">
-                <h2 className="text-2xl font-semibold  mb-4">
-                  Shipping Details
-                </h2>
-                <p className="text-lg text-gray-800">
+          {/* Shipping Details */}
+          {customerData && (
+            <div className="bg-gray-100 p-4 rounded-lg mb-6">
+              <h2 className="text-xl font-semibold mb-3 text-gray-800">
+                Shipping Details
+              </h2>
+              <div className="space-y-2 text-gray-700">
+                <p>
                   <strong>Name:</strong> {customerData.name}
                 </p>
-                <p className="text-lg text-gray-800">
+                <p>
                   <strong>Email:</strong> {customerData.email}
                 </p>
-                <p className="text-lg text-gray-800">
+                <p>
                   <strong>Phone:</strong> {customerData.phone}
                 </p>
-                <p className="text-lg text-gray-800">
+                <p>
                   <strong>Address:</strong> {customerData.street},{" "}
                   {customerData.city}, {customerData.state},{" "}
                   {customerData.country} - {customerData.pin}
                 </p>
               </div>
-            )}
+            </div>
+          )}
 
-            <div className=" p-4 rounded-lg shadow-inner">
-              <h2 className="text-2xl font-semibold  mb-4">Products Ordered</h2>
-              {
-                <div className="product-item text-lg text-gray-800 border-b border-gray-200 pb-2 mb-2 last:border-none last:pb-0 last:mb-0">
-                  <p>
-                    <strong>Product:</strong> {productData.Necklace}
-                  </p>
-                  <p>
-                    <strong>Price:</strong> $
-                    <span id="amount">{productData.Price}</span>
+          {/* Product Details */}
+          {productData && (
+            <div className="bg-gray-100 p-4 rounded-lg mb-6">
+              <h2 className="text-xl font-semibold mb-3 text-gray-800">
+                Products Ordered
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-300 pb-3">
+                  <div>
+                    <p className="text-gray-700">
+                      <strong>Product:</strong> {productData.Necklace}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Quantity:</strong> {productData.quantity}
+                    </p>
+                  </div>
+                  <p className="text-lg font-medium text-gray-800">
+                    ${productData.Price}
                   </p>
                 </div>
-              }
-
-              <div className="mt-4 text-xl font-bold">
-                <p id="total-amount">🎅 Total Amount: ${productData.Price}</p>
+              </div>
+              <div className="text-right mt-4">
+                <p className="text-xl font-bold ">
+                  Total: $
+                  {productData.quantity === 1
+                    ? productData.Price
+                    : (productData.Price * productData.quantity - 20).toFixed(
+                        2
+                      )}
+                </p>
               </div>
             </div>
+          )}
+
+          {/* Call to Action */}
+          <div className="text-center mt-6">
+            <p className="text-gray-600">Have questions about your order?</p>
+            <a
+              href="/contact"
+              className="mt-2 inline-block px-6 py-2 rounded-md  text-white font-semibold  transition duration-200"
+              style={{ backgroundColor: "#ff0084" }}
+            >
+              Contact Support
+            </a>
           </div>
         </div>
       </div>

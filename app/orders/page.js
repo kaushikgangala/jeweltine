@@ -24,7 +24,7 @@ export default function OrdersPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({orderId, completed: true }),
+        body: JSON.stringify({ orderId, completed: true }),
       });
 
       if (res.ok) {
@@ -68,23 +68,29 @@ export default function OrdersPage() {
               <strong>Email:</strong> {order.customer.email}
             </p>
             <p className="text-lg text-gray-700 mb-4">
-              <strong>Images folder:</strong>  {order.imagesFolder}
-</p>
+              <strong>Images folder:</strong> {order.imagesFolder}
+            </p>
             <p className="text-lg text-gray-700 mb-4">
-              <strong>Address:</strong> {order.customer.street}, {order.customer.city},{" "}
-              {order.customer.state}, {order.customer.country} -{" "}
-              {order.customer.pin}
+              <strong>Address:</strong> {order.customer.street},{" "}
+              {order.customer.city}, {order.customer.state},{" "}
+              {order.customer.country} - {order.customer.pin}
             </p>
 
             <h3 className="text-xl font-medium text-gray-800 mb-2">
               Products Ordered:
             </h3>
             <ul className="list-disc list-inside mb-4">
-              {order.products.map((product, index) => (
-                <li key={index} className="text-gray-700">
-                  {product.name} - ${product.price}
-                </li>
-              ))}
+              {/* {order.products.map((product, index) => ( */}
+              <li className="text-gray-700">
+                Product - {order.customization.Necklace}
+              </li>
+              <li className="text-gray-700">
+                Qty - {order.customization.quantity}
+              </li>
+              <li className="text-gray-700">
+                Price - {order.customization.Price}
+              </li>
+              {/* ))} */}
             </ul>
 
             {!order.completed && (

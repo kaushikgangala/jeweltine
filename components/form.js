@@ -153,8 +153,8 @@ export default function OrderForm({ handleScrollToSection }) {
         body: JSON.stringify({
           customization,
           customer,
-          product,
-          imagesFolder: `orders/${folderId}`,
+          images,
+          // imagesFolder: `orders/${folderId}`,
         }),
       });
       await fetch("/api/orders", {
@@ -176,6 +176,7 @@ export default function OrderForm({ handleScrollToSection }) {
     // Push to the Thank You page with query parameters
     localStorage.setItem("customer", JSON.stringify(customer));
     localStorage.setItem("customization", JSON.stringify(customization));
+    localStorage.setItem("images", JSON.stringify(images));
     router.push(`/thankyou`);
   };
 

@@ -30,14 +30,13 @@ export default function Home() {
       <DiscountCounter />
       <div className="flex justify-center items-center space-x-6">
         <div className="w-full" style={{ backgroundColor: "#ff0084" }}>
-          <p className="text-center pt-1 pb-1 text-white">Jeweltine</p>
-          {/* <Image
-            src="/logo.svg" // Change this to your image path
+          <Image
+            src="/jeweltine_logo.png" // Change this to your image path
             alt="Special Tree Image"
-            width={120} // Adjust image size if necessary
-            height={120}
-            className="m-auto pt-1 pb-2"
-          /> */}
+            width={500} // Adjust image size if necessary
+            height={500}
+            className="m-auto w-36"
+          />
         </div>
       </div>
 

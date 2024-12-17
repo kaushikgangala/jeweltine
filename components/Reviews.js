@@ -12,7 +12,6 @@ const Reviews = () => {
           headers: { "Content-Type": "application/json" },
         });
         const data = await res.json(); // Parse the JSON response
-        console.log("data", data);
         setReviews(data); // Set parsed data
       } catch (error) {
         console.error("Failed to fetch reviews:", error);
@@ -23,16 +22,23 @@ const Reviews = () => {
   }, []); // Empty dependency array ensures it runs only once on component mount
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <h2>See what our customers have to say...</h2>
-      {reviews.map((review, index) => (
-        <ReviewCard
-          key={index} // Use a unique key for each child
-          name={review.name}
-          review={review.review}
-          imageUrl={review.imageUrl}
-        />
-      ))}
+    <div className="p-4">
+      <h2
+        className="text-2xl font-bold mb-6 text-center "
+        style={{ color: "#ff0084" }}
+      >
+        See what our customers have to say...
+      </h2>
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-6">
+        {reviews.map((review, index) => (
+          <ReviewCard
+            key={index} // Use a unique key for each child
+            name={review.name}
+            review={review.review}
+            imageUrl={review.imageUrl}
+          />
+        ))}
+      </div>
     </div>
   );
 };

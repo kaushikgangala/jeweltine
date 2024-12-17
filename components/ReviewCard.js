@@ -3,31 +3,33 @@ import Image from "next/image";
 
 const ReviewCard = ({ name, review, imageUrl }) => {
   return (
-    <div className="max-w-sm p-4 border-2 border-gray-300 rounded-lg shadow-lg">
-      <div className="flex items-center space-x-4">
+    <div className="max-w-sm  border-2 border-pink-400 rounded-md shadow-lg">
+      <div className="flex flex-col items-start ">
         <Image
           src={imageUrl}
           alt={`review`}
-          width={400}
-          height={400}
+          width={800}
+          height={800}
+          unoptimized
           loading="eager"
-          className="w-full h-auto rounded-lg shadow-lg"
+          className="w-full h-auto rounded-sm shadow-lg"
         />
-        <br />
-        <div>
+        {/* <br /> */}
+      </div>
+      <div className="p-4">
+        <div className="mt-2">
           <h3 className="text-xl font-semibold text-gray-800">{name}</h3>
-          <p className="text-sm text-gray-500">Verified Customer</p>
+          <span className="text-gray-400">⭐️⭐️⭐️⭐️⭐️</span>{" "}
         </div>
-      </div>
-      <div className="mt-4 text-gray-700">
-        <p className="text-base">{review}</p>
-      </div>
-      <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">
-          Verified Customer
-        </span>
-        <span className="text-gray-400">⭐️⭐️⭐️⭐️⭐️</span>{" "}
-        {/* You can change star count */}
+        <div className="mt-4 text-gray-700">
+          <p className="text-base">{review}</p>
+        </div>
+        <div className="mt-4 flex flex-col md:flex-row items-center justify-between text-sm text-gray-500 gap-2">
+          <span className="px-4 py-1 bg-green-100 text-green-700 rounded text-center">
+            Verified Customer
+          </span>
+          {/* You can change star count */}
+        </div>
       </div>
     </div>
   );

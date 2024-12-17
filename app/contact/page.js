@@ -13,10 +13,10 @@ const Contact = () => {
           <p className="text-lg text-gray-700 text-center">
             You can reach us via email at{" "}
             <a
-              href="mailto:merryskirts@gmail.com"
+              href="mailto:jeweltine@gmail.com"
               className="text-blue-500 hover:underline"
             >
-              merryskirts@gmail.com
+              jeweltine@gmail.com
             </a>
           </p>
         </div>
