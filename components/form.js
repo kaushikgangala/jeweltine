@@ -127,7 +127,8 @@ export default function OrderForm({ handleScrollToSection }) {
           customization,
           customer,
           product,
-          imagesFolder: `orders/${folderId}`,
+          images,
+          // imagesFolder: `orders/${folderId}`,
         }),
       });
 
