@@ -35,7 +35,7 @@ export default function Home() {
             alt="Special Tree Image"
             width={500} // Adjust image size if necessary
             height={500}
-            className="m-auto w-36"
+            className="m-auto py-3 w-24"
           />
         </div>
       </div>
