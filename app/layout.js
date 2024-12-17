@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '2945528738949091');
+              fbq('init', '2232872743772746');
               fbq('track', 'PageView');
             `,
           }}
@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
             height="1"
             width="1"
             style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=1513451992668350&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=2232872743772746&ev=PageView&noscript=1"
             alt="Meta Pixel"
           />
         </noscript>

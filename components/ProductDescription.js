@@ -13,8 +13,8 @@ const ProductDescription = () => {
             <p>
               Give your partner the gift that symbolizes your never-ending love.
               This necklace is the perfect accessory for everyday wear. Whether
-              it's a memorable anniversary or a special birthday, make sure to
-              dazzle your special someone by gifting them this stunning
+              it&lsquo;s a memorable anniversary or a special birthday, make
+              sure to dazzle your special someone by gifting them this stunning
               necklace.
             </p>
             <Image
@@ -30,9 +30,9 @@ const ProductDescription = () => {
             />
             <p>
               High quality polished surgical steel and rose gold finish or 18k
-              yellow gold finish Pendant dimensions: 0.6" (1.5cm) height / 1.1"
-              (2.8cm) width Adjustable length: 18" - 22" (45.72 cm - 55.88 cm)
-              Lobster clasp
+              yellow gold finish Pendant dimensions: 0.6&ldquo; (1.5cm) height /
+              1.1&ldquo; (2.8cm) width Adjustable length: 18&ldquo; - 22&ldquo;
+              (45.72 cm - 55.88 cm) Lobster clasp
             </p>
             <Image
               src={
@@ -80,11 +80,11 @@ const ProductDescription = () => {
               className="w-400 h-auto rounded-lg shadow-lg"
             />
             <p>
-              We believe that jewelry is not just an accessory—it's a reflection
-              of your story, your personality, and your milestones. Whether
-              you're celebrating a special occasion or looking for a timeless
-              gift, Jeweltine is here to help you find the perfect piece that
-              speaks to your heart.
+              We believe that jewelry is not just an accessory—it&lsquo;s a
+              reflection of your story, your personality, and your milestones.
+              Whether you&lsquo;re celebrating a special occasion or looking for
+              a timeless gift, Jeweltine is here to help you find the perfect
+              piece that speaks to your heart.
             </p>
             <Image
               src={
@@ -117,10 +117,10 @@ const ProductDescription = () => {
             <p>
               Once your order is placed, our design team will get to work right
               away. (Note: To ensure the efficiency of production and shipping,
-              please verify that your customized details are accurate.) We'll
-              begin designing and customizing your order as soon as it's
-              confirmed. The customization process typically takes 1 day,
-              depending on the complexity of the product.
+              please verify that your customized details are accurate.)
+              We&lsquo;ll begin designing and customizing your order as soon as
+              it&lsquo;s confirmed. The customization process typically takes 1
+              day, depending on the complexity of the product.
             </p>
             <p>
               Once the design is complete, we move into production, which
