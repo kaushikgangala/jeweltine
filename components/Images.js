@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import Image from "next/image";
@@ -27,9 +26,9 @@ export default function SwipableImageGallery({ images }) {
       <Image
         src={images[currentImage]}
         alt={`Product Image ${currentImage + 1}`}
-        width={2000}
-        height={2000}
-        // unoptimized
+        width={400}
+        height={400}
+        unoptimized
         loading="eager"
         className="w-full h-auto rounded-lg shadow-lg"
       />
@@ -41,9 +40,9 @@ export default function SwipableImageGallery({ images }) {
             <Image
               src={img}
               alt={`Thumbnail Image ${index + 1}`}
-              width={200}
-              height={200}
-              // unoptimized
+              width={50}
+              height={50}
+              unoptimized
               className={`cursor-pointer w-12 h-12 rounded-md border-2 ${
                 currentImage === index ? "border-blue-500" : "border-gray-400"
               } object-cover`}
