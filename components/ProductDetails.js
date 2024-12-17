@@ -10,6 +10,7 @@ const ProductDetails = ({ handleScrollToSection }) => {
 
   // Sample images for the carousel
   const images = [
+    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi-1.png",
     "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi0.png",
     "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi1.png",
     "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi2.png",

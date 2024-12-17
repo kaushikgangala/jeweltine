@@ -317,7 +317,8 @@ export default function OrderForm({ handleScrollToSection }) {
                     </div>
                   )
               )}
-              <div className="flex flex-col gap-3 pb-10">
+              <hr className="my-4 border-t border-gray-300" />
+              <div className="flex flex-col gap-3 ">
                 <label
                   htmlFor={"Custom Text"}
                   className="block text-sm font-medium text-gray-700 mb-2"
@@ -384,18 +385,21 @@ export default function OrderForm({ handleScrollToSection }) {
                 </label>
               </div>
               {/* Show the custom input field if "Custom Text" is selected */}
-              {customTextEnabled && (
-                <input
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  type="text"
-                  placeholder="Enter your custom message here"
-                  value={customInput}
-                  onChange={handleCustomInputChange}
-                />
-              )}
+              <div className="pb-10">
+                {customTextEnabled && (
+                  <input
+                    className="w-full p-3 border border-gray-300 rounded-md"
+                    type="text"
+                    placeholder="Enter your custom message here"
+                    value={customInput}
+                    onChange={handleCustomInputChange}
+                  />
+                )}
+              </div>
+              <hr className="my-4 border-t border-gray-300" />
 
               <label
-                htmlFor={"Necklace"}
+                htmlFor={"file"}
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 {"Upload image: "}
@@ -441,6 +445,7 @@ export default function OrderForm({ handleScrollToSection }) {
                 frame and away from the camera. **
               </p>
               <input
+                id="file"
                 type="file"
                 disabled={images.length >= 1}
                 accept="image/*"
@@ -490,6 +495,8 @@ export default function OrderForm({ handleScrollToSection }) {
                   You have exceeded the limit of 1 images.
                 </p>
               )}
+              <hr className="my-4 border-t border-gray-300" />
+
               <label
                 htmlFor={"Necklace"}
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -539,6 +546,8 @@ export default function OrderForm({ handleScrollToSection }) {
                   </label>
                 </div>
               </div>
+              <hr className="my-4 border-t border-gray-300" />
+
               <label
                 htmlFor={"Color"}
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -570,6 +579,8 @@ export default function OrderForm({ handleScrollToSection }) {
                   </label>
                 </div>
               </div>
+              <hr className="my-4 border-t border-gray-300" />
+
               <label
                 htmlFor={"Box"}
                 className="block text-sm font-medium text-gray-700 mb-2"
