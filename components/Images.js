@@ -29,7 +29,7 @@ export default function SwipableImageGallery({ images }) {
         alt={`Product Image ${currentImage + 1}`}
         width={2000}
         height={2000}
-        unoptimized
+        // unoptimized
         loading="eager"
         className="w-full h-auto rounded-lg shadow-lg"
       />
@@ -41,9 +41,9 @@ export default function SwipableImageGallery({ images }) {
             <Image
               src={img}
               alt={`Thumbnail Image ${index + 1}`}
-              width={400}
-              height={400}
-              unoptimized
+              width={200}
+              height={200}
+              // unoptimized
               className={`cursor-pointer w-12 h-12 rounded-md border-2 ${
                 currentImage === index ? "border-blue-500" : "border-gray-400"
               } object-cover`}
