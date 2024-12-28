@@ -2,18 +2,15 @@
 
 import { Caveat } from "next/font/google";
 
-const caveat = Caveat({ subsets: ["latin"], weight: ["400", "700"] });
 
 import Image from "next/image";
 import { useRef } from "react";
 
-import DiscountCounter from "../components/counter";
-import OrderForm from "../components/form";
-import ProductDetails from "@/components/ProductDetails";
+import DiscountCounter from "@/components/Counter";
 import ProductDescription from "@/components/ProductDescription";
+import ProductGrid from "@/components/Products";
 import Footer from "@/components/Footer";
-import { primaryFontColor, secondaryFontColor } from "@/utils/styles";
-import Reviews from "@/components/Reviews";
+import { products } from "@/constants/products";
 
 export default function Home() {
   const sectionRef = useRef(null);
@@ -26,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <DiscountCounter />
       <div className="flex justify-center items-center space-x-6">
         <div className="w-full" style={{ backgroundColor: "#ff0084" }}>
@@ -39,25 +36,12 @@ export default function Home() {
           />
         </div>
       </div>
+      <main className="container mx-auto px-4 py-8">
+        <ProductGrid />
+      </main>
 
-      <div className="container mx-auto p-6 mt-8">
-        {/* Responsive Flex Container */}
-        <div className="flex flex-col md:flex-row justify-center gap-10 mb-16">
-          {/* Left Section */}
-          <div className="flex-1 space-y-6  max-w-screen-sm">
-            {/* Product Title */}
-            <ProductDetails handleScrollToSection={handleScrollToSection} />
-          </div>
-
-          {/* Right Section */}
-          <div className="flex-1 space-y-6   max-w-screen-sm" ref={sectionRef}>
-            <OrderForm handleScrollToSection={handleScrollToSection} />
-          </div>
-        </div>
-        <ProductDescription />
-      </div>
-      <Reviews />
+      <ProductDescription />
       <Footer />
-    </>
+    </div>
   );
 }

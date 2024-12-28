@@ -15,11 +15,11 @@ const ProductDescription = () => {
               This necklace is the perfect accessory for everyday wear. Whether
               it&lsquo;s a memorable anniversary or a special birthday, make
               sure to dazzle your special someone by gifting them this stunning
-              necklace.
+              necklace. The dazzling Forever Love Necklace is sure to make her heart melt! This necklace features a stunning 6.5mm CZ crystal surrounded by a polished heart pendant embellished with smaller crystals to add extra sparkle and shine. Beautifully crafted with either a yellow gold finish, be sure to give her a classic gift she can enjoy everyday.
             </p>
             <Image
               src={
-                "https://jeweltine.s3.us-east-1.amazonaws.com/misc/description_image_5.jpg"
+                "https://cdn.shineon.com/long-form-description-images/forever-love-no-mc-placeholder.jpg"
               }
               alt={`Product Image 1`}
               width={400}
@@ -29,14 +29,14 @@ const ProductDescription = () => {
               className="w-400 h-auto rounded-lg shadow-lg"
             />
             <p>
-              High quality polished surgical steel and rose gold finish or 18k
-              yellow gold finish Pendant dimensions: 0.6&ldquo; (1.5cm) height /
-              1.1&ldquo; (2.8cm) width Adjustable length: 18&ldquo; - 22&ldquo;
+              High quality polished surgical steel and 18k
+              yellow gold finish Pendant dimensions: 0.8&ldquo; (2.2cm) height /
+              0.7&ldquo; (1.8cm) width Adjustable length: 18&ldquo; - 22&ldquo;
               (45.72 cm - 55.88 cm) Lobster clasp
             </p>
             <Image
               src={
-                "https://jeweltine.s3.us-east-1.amazonaws.com/misc/description_image_6.jpg"
+                "https://prod-rendering-engine.s3.amazonaws.com/transformation-13983-53a0e3ff-8bfc-4196-a685-2483cb7f54a2.jpeg"
               }
               alt={`Product Image 1`}
               width={400}
@@ -47,9 +47,7 @@ const ProductDescription = () => {
             />
             <p>
               Your piece is lovingly packaged in a complimentary soft touch box
-              for easy gifting. Elevate your presentation by upgrading to the
-              mahogany style luxury box, which features a brilliant LED
-              spotlight.
+              for easy gifting.
             </p>
           </div>
         </div>
@@ -70,7 +68,7 @@ const ProductDescription = () => {
             </p>
             <Image
               src={
-                "https://jeweltine.s3.us-east-1.amazonaws.com/misc/description_image_3.jpeg"
+                "https://prod-rendering-engine.s3.amazonaws.com/transformation-13981-f4aea58b-aa9e-4eab-9bca-bc211ce30624.jpeg"
               }
               alt={`Product Image 3`}
               width={400}
@@ -88,7 +86,7 @@ const ProductDescription = () => {
             </p>
             <Image
               src={
-                "https://jeweltine.s3.us-east-1.amazonaws.com/misc/description_image_4.png"
+                "https://prod-rendering-engine.s3.amazonaws.com/transformation-13978-012a0dfb-a6c6-47e9-9787-644182e8a6d2.jpeg"
               }
               alt={`Product Image 4`}
               width={400}
@@ -101,7 +99,7 @@ const ProductDescription = () => {
               We take pride in offering exceptional customer service, ensuring
               your experience with us is seamless and enjoyable. Your
               satisfaction is our top priority, and we are committed to
-              delivering custom jewelry that exceeds your expectations. Thank
+              delivering jewelry that exceeds your expectations. Thank
               you for choosing Jeweltine to be a part of your journey.
             </p>
           </div>
@@ -113,13 +111,11 @@ const ProductDescription = () => {
       description: (
         <div className="mt-2 p-4 text-gray-700 bg-white border border-gray-200 rounded-md shadow-sm flex flex-col justify-center items-center gap-4">
           <div className="max-w-xl flex flex-col justify-center items-center gap-4">
-            <h3>1: Design & Production (1 Day):</h3>
+            <h3>1: Production (1 Day):</h3>
             <p>
-              Once your order is placed, our design team will get to work right
-              away. (Note: To ensure the efficiency of production and shipping,
-              please verify that your customized details are accurate.)
-              We&lsquo;ll begin designing and customizing your order as soon as
-              it&lsquo;s confirmed. The customization process typically takes 1
+              Once your order is placed, our team will get to work right
+              away.
+              The Production process typically takes 1
               day, depending on the complexity of the product.
             </p>
             <p>
@@ -128,7 +124,7 @@ const ProductDescription = () => {
             </p>
             <Image
               src={
-                "https://jeweltine.s3.us-east-1.amazonaws.com/misc/description_image_1.jpg"
+                "https://prod-rendering-engine.s3.amazonaws.com/transformation-13750-88cb5f3e-7bf9-4b8a-ac5f-9b1a43979149.jpeg"
               }
               alt={`Product Image 1`}
               width={400}
@@ -140,12 +136,11 @@ const ProductDescription = () => {
             <h3>2: Shipping (2-5 Days or Faster):</h3>
             <p>
               Once production is complete, your product is carefully packaged
-              and shipped. We’ll do our best to customize your order as quickly
-              and as efficiently as possible!
+              and shipped.
             </p>
             <Image
               src={
-                "https://jeweltine.s3.us-east-1.amazonaws.com/misc/description_image_2.jpg"
+                "https://prod-rendering-engine.s3.amazonaws.com/transformation-1732-dbd0e1d3-c2d8-40ec-9b1d-579a05d52baa.jpeg"
               }
               alt={`Product Image 1`}
               width={400}
@@ -154,21 +149,9 @@ const ProductDescription = () => {
               loading="eager"
               className="w-400 h-auto rounded-lg shadow-lg"
             />
-            <h3>Return & Refund:</h3>
-            <p>
-              Custom orders are non-returnable and non-exchangeable due to their
-              personalized nature. Once an order is placed, we begin the
-              customization process right away. As a result, we are unable to
-              accommodate changes to the customized details, such as size or
-              color, after the order is confirmed.
-            </p>
-            <p>
-              If there is an error on our part, we will promptly correct the
-              issue and send you a replacement product. However, we are unable
-              to offer refunds in this case. Please understand that customized
-              products are unique to you and cannot be resold. We appreciate
-              your understanding!
-            </p>
+            <h3 className="mt-10">Return & Refund:</h3>
+            <p> Our return and refund policy applies only in cases where there is a fault with the necklace or the packaging box. If you receive a defective or damaged product, please contact us within 1 day of receiving your order, and we will gladly provide a replacement or issue a refund if the replacement is not possible. </p>
+            <p> Please note that returns or refunds are not accepted for reasons such as change of mind or personal preference. The necklace must be returned in its original condition and packaging for a refund to be processed. Thank you for your understanding and support!</p>
           </div>
         </div>
       ),
@@ -181,7 +164,7 @@ const ProductDescription = () => {
             <p>
               We want you to be completely satisfied with your purchase. Our
               customer support is available 24/7, 365 days a year. If you need
-              any assistance, please reach out to us at jeweltine@gmail.com.
+              any assistance, please reach out to us at contact.jeweltine@gmail.com.
             </p>
           </div>
         </div>

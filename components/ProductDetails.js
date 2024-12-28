@@ -1,38 +1,13 @@
-// "use client";
-// import { useState } from "react";
-// import Image from "next/image";
 import Images from "./Images";
+import { usePathname } from "next/navigation";
 import React from "react";
+
+import { products } from "@/constants/products";
 import { primaryFontColor, secondaryFontColor } from "@/utils/styles";
 
 const ProductDetails = ({ handleScrollToSection }) => {
-  // const [currentImage, setCurrentImage] = useState(0);
-
-  // Sample images for the carousel
-  const images = [
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi-1.png",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi0.jpg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi1.jpg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi2.jpg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi3.jpg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi4.jpeg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi5.jpeg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi6.jpeg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi7.jpg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi8.png",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi9.png",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi10.png",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi11.jpg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi12.jpg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi13.jpeg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi14.jpeg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi15.jpeg",
-    "https://s3.us-east-1.amazonaws.com/jeweltine/site-assets/product-main-images/pi16.jpeg",
-  ];
-
-  // function getImage(currentImage) {
-  //   return images[currentImage];
-  // }
+  const pathname = usePathname().split("/").join("");
+  const images = products[pathname].images;
 
   const currentDate = new Date();
   const deliveryDate = new Date(currentDate);
@@ -69,13 +44,13 @@ const ProductDetails = ({ handleScrollToSection }) => {
             className="line-through text-lg"
             style={{ color: secondaryFontColor }}
           >
-            $98
+            $119.9
           </span>
           <span
             className="text-4xl font-bold"
             style={{ color: primaryFontColor }}
           >
-            $<span id="amount">49</span>
+            $<span id="amount">59.95</span>
           </span>
         </div>
 

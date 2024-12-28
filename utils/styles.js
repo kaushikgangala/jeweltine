@@ -1,2 +1,2 @@
-export const primaryFontColor = "#1D2E3B";
+export const primaryFontColor = "#3f3f3f";
 export const secondaryFontColor = "#4D5256";

@@ -1,10 +1,10 @@
 import React from 'react'
-import OrderForm from '@/components/form'
+import OrderForm from '@/components/Form'
 
 const page = () => {
   return (
     <div>
-        <OrderForm/>
+      <OrderForm />
     </div>
   )
 }

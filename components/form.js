@@ -1,15 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { transformLink } from "@/utils/s3Link";
-import { useRef, useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+
+import { products } from "@/constants/products";
 import PayPalButton from "./PaypalButton";
 import { primaryFontColor, secondaryFontColor } from "@/utils/styles";
 import Stats from "./Stats";
 
-export default function OrderForm({ handleScrollToSection }) {
-  const section1Ref = useRef(null);
+export default function OrderForm() {
+
+  const pathname_regular = usePathname().split("/").join("");
+  const pathname =
+    usePathname().split("/").join("").charAt(0).toUpperCase() +
+    usePathname().split("/").join("").substring(1);
   const section2Ref = useRef(null);
   const section3Ref = useRef(null);
 
@@ -25,96 +32,18 @@ export default function OrderForm({ handleScrollToSection }) {
     state: "",
     country: "",
   });
-  const [customization, setCustomization] = useState({
-    "Name 1": "",
-    "Name 2": "",
-    "Custom Text":
-      "I Loved You Then, I Love You Still. I Always Have, I Always Will.",
-    Necklace: "Interlocked Hearts",
-    Color: "Gold",
-    Price: 49,
+
+  const [product, setProduct] = useState({
+    name: `Funny ${pathname} Valentine's Day - Forever Love Necklace`,
+    price: 59.95,
     quantity: 1,
   });
 
-  const [customTextEnabled, setCustomTextEnabled] = useState(false);
-  const [customInput, setCustomInput] = useState("");
-  const [product, setProduct] = useState([
-    { name: "Interlocked Hearts", price: 49, color: "gold" },
-  ]);
-
-  const handleOptionChange = (event) => {
-    const value = event.target.value;
-
-    if (value === "custom") {
-      setCustomTextEnabled(true); // Enable custom input field
-      setCustomization((prev) => ({ ...prev, "Custom Text": customInput })); // Use custom input value
-    } else {
-      setCustomTextEnabled(false); // Disable custom input field
-      setCustomization((prev) => ({ ...prev, "Custom Text": value })); // Set predefined option
-    }
-  };
-
-  const handleCustomInputChange = (event) => {
-    const value = event.target.value;
-    setCustomInput(value); // Update local custom input state
-    setCustomization((prev) => ({ ...prev, "Custom Text": value })); // Update customization state
-  };
-
-  const handleCustomizationChange = (e) => {
-    const { name, value } = e.target;
-    console.log(name, value);
-    setCustomization((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const [images, setImages] = useState([]);
-  const [uploading, setUploading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
   const handleCustomerChange = (e) => {
     const { name, value } = e.target;
     setCustomer((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    setUploading(true);
-
-    try {
-      const uploadedImages = await Promise.all(
-        files.map(async (file) => {
-          const res = await fetch("/api/orders/upload", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              fileName: file.name,
-              folder: `orders/${folderId}`, // Unique folder for the current order
-            }),
-          });
-
-          if (!res.ok) throw new Error("Failed to get signed URL");
-
-          const { uploadUrl, fileUrl } = await res.json();
-
-          // Upload to S3
-          await fetch(uploadUrl, {
-            method: "PUT",
-            headers: {
-              "Content-Type": file.type,
-            },
-            body: file,
-          });
-
-          return fileUrl;
-        })
-      );
-
-      setImages((prev) => [...prev, ...uploadedImages]);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      alert("Failed to upload images");
-    } finally {
-      setUploading(false);
-    }
   };
 
   const handleCartAbandonment = async (e) => {
@@ -124,11 +53,8 @@ export default function OrderForm({ handleScrollToSection }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customization,
           customer,
           product,
-          images,
-          // imagesFolder: `orders/${folderId}`,
         }),
       });
 
@@ -142,8 +68,8 @@ export default function OrderForm({ handleScrollToSection }) {
   const handleSubmit = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
 
-    if (!customer.name || !customer.email || images.length === 0) {
-      alert("Please fill in all required fields and upload images.");
+    if (!customer.name || !customer.email) {
+      alert("Please fill in all required fields.");
       return;
     }
 
@@ -152,10 +78,8 @@ export default function OrderForm({ handleScrollToSection }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customization,
           customer,
-          images,
-          // imagesFolder: `orders/${folderId}`,
+          product,
         }),
       });
       await fetch("/api/orders", {
@@ -174,46 +98,106 @@ export default function OrderForm({ handleScrollToSection }) {
       alert("Failed to place order. Please try again.");
     }
 
+    // shineon
+    const shineon_res = await fetch("https://api.shineon.com/v1/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SHINEON_KEY}`,
+      },
+      body: JSON.stringify({
+        order: {
+          source_id: uuidv4(),
+          email: customer.email,
+          shipment_notification_url: "http://url.com/notification",
+          line_items: [
+            {
+              store_line_item_id: uuidv4(),
+              sku: products[pathname_regular].sku,
+              quantity: product.quantity,
+            },
+          ],
+          shipping_address: {
+            name: customer.name,
+            phone: customer.phone,
+            address1: customer.street,
+            city: customer.city,
+            zip: customer.pin,
+            province: customer.state,
+            country_code: "US",
+          },
+        },
+      }),
+    });
+    const data = await shineon_res.json()
+    console.log(data)
+
+    const currentDate = new Date();
+    const deliveryDate = new Date(currentDate);
+    deliveryDate.setDate(deliveryDate.getDate() + 6);
+
+    const formattedDeliveryDate = deliveryDate.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+
+    // thankyou email
+    await fetch("/api/email/thankyou", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: customer.email,
+        subject: 'Thank You for Your Purchase!',
+        message: `Hey, ${customer.name},
+
+Thank you for your purchase! Your order will be at your doorstep at around ${formattedDeliveryDate}.
+
+Here are the details of your order:
+
+    Product Name: ${product.name}
+    Total: $${product.quantity === 2 ? 99.9 : product.price}
+    Shipping Address: ${customer.street}, ${customer.city}, ${customer.pin}, ${customer.state}, ${customer.country}.
+
+If you have any questions or concerns, feel free to reach out to us at contact.jeweltine@gmail.com.
+
+Warm regards,
+Jeweltine`
+      })
+    })
+
+    // thankyou email
+    await fetch("/api/email/thankyou", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: customer.email,
+        subject: 'Important: Confirm Your Payment to Complete Your Order',
+        message: `Hey, ${customer.name},
+
+Thank you for your purchase! Since we are using PayPal for secure payments, we kindly ask for your assistance to ensure your order is processed without delays. 👇
+
+💡 Here’s What You Need to Do:
+
+    1. Log in to your PayPal account.
+    2. Locate the transaction for your recent purchase with us in the "Activity" section.
+    3. Click on the transaction and look for the option to "Confirm Receipt" or "Mark as Received" (this may be under transaction details).
+
+Why This Is Important:
+PayPal sometimes holds payments for new businesses to ensure a smooth transaction process. By confirming receipt of your order, you help release the funds so we can continue processing your purchase and deliver your product as quickly as possible.
+
+If you have any questions or need help with the process, feel free to contact us at contact.jeweltine@gmail.com.`
+      })
+    })
+
+
+
     // Push to the Thank You page with query parameters
     localStorage.setItem("customer", JSON.stringify(customer));
-    localStorage.setItem("customization", JSON.stringify(customization));
-    localStorage.setItem("images", JSON.stringify(images));
+    localStorage.setItem("product", JSON.stringify(product));
     router.push(`/thankyou`);
   };
 
-  const handleRemoveImage = async (index) => {
-    const imageUrl = images[index];
-    const fileName =
-      imageUrl.split("/")[imageUrl.split("/").length - 2] +
-      "/" +
-      imageUrl.split("/")[imageUrl.split("/").length - 1]; // Extract the file name from the URL
-
-    try {
-      setImages((prev) => prev.filter((_, i) => i !== index)); // Remove from UI first
-
-      // Send a request to the backend to delete the image from S3
-      const res = await fetch("/api/orders/remove-image", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fileName }), // Send the file name to the backend
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to remove image");
-      }
-    } catch (error) {
-      console.error("Error removing image:", error);
-    }
-  };
-
-  function handleScrollToSection1() {
-    section1Ref.current?.scrollIntoView({
-      behavior: "smooth", // Smooth scroll effect
-      block: "start", // Align to the top of the viewport
-    });
-  }
   function handleScrollToSection2() {
     section2Ref.current?.scrollIntoView({
       behavior: "smooth", // Smooth scroll effect
@@ -242,8 +226,6 @@ export default function OrderForm({ handleScrollToSection }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        value: customization.Price,
-        quantity: customization.quantity,
         email: customer.email,
         phone: customer.phone,
         fbc: sessionStorage.getItem("_fbc"),
@@ -257,14 +239,10 @@ export default function OrderForm({ handleScrollToSection }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        value: customization.Price,
-        quantity: customization.quantity,
         email: customer.email,
         phone: customer.phone,
         fbc: sessionStorage.getItem("_fbc"),
         fbp: sessionStorage.getItem("_fbp"),
-        totalAmount: customization.Price,
-        qty: customization.quantity,
       }),
     });
   }
@@ -275,7 +253,8 @@ export default function OrderForm({ handleScrollToSection }) {
         className="text-4xl font-extrabold mb-6 text-center "
         style={{ color: "#ff0084" }}
       >
-        50% OFF - Jeweltine Love Necklace - For Your Loved One
+        {`50% OFF - Funny `}
+        {pathname} {` Outdoors Valentine's Day - Forever Love Necklace`}{" "}
       </h1>
 
       <Stats />
@@ -286,382 +265,8 @@ export default function OrderForm({ handleScrollToSection }) {
         </p>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div ref={section1Ref}></div> {/* Step 1: Customer Details */}
-          {step >= 1 && (
-            <fieldset className="p-6 border-2 border-gray-300 rounded-lg shadow-lg bg-white max-w-4xl mx-auto overflow-hidden">
-              <legend
-                className="text-2xl font-semibold text-center mb-4"
-                style={{ color: secondaryFontColor }}
-              >
-                Customization Details
-              </legend>
-              {Object.keys(customization).map(
-                (field) =>
-                  (field === "Name 1" || field === "Name 2") && (
-                    <div key={field} className="mb-4">
-                      <label
-                        htmlFor={field}
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        {field}
-                      </label>
-                      <input
-                        type={"text"}
-                        placeholder={""}
-                        id={field}
-                        name={field}
-                        value={customer[field]}
-                        onChange={handleCustomizationChange}
-                        required
-                        className="w-full p-3 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                  )
-              )}
-              <hr className="my-4 border-t border-gray-300" />
-              <div className="flex flex-col gap-3 ">
-                <label
-                  htmlFor={"Custom Text"}
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  {"Text: "}
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="Custom Text"
-                    value="I Loved You Then, I Love You Still. I Always Have, I Always Will."
-                    onChange={handleOptionChange}
-                    defaultChecked
-                  />
-                  I Loved You Then, I Love You Still. I Always Have, I Always
-                  Will.
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="Custom Text"
-                    value="Every Love Story Is Beautiful, but Ours Is My Favorite."
-                    onChange={handleOptionChange}
-                  />
-                  Every Love Story Is Beautiful, but Ours Is My Favorite.
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="Custom Text"
-                    value="Forever Is a Long Time, but I Wouldn’t Mind Spending It by Your Side."
-                    onChange={handleOptionChange}
-                  />
-                  Forever Is a Long Time, but I Wouldn’t Mind Spending It by
-                  Your Side.
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="Custom Text"
-                    value="My Love for You Is a Journey: Starting at Forever and Ending at Never."
-                    onChange={handleOptionChange}
-                  />
-                  My Love for You Is a Journey: Starting at Forever and Ending
-                  at Never.
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="Custom Text"
-                    value="You Are the Light That Guides Me Through My Darkest Days."
-                    onChange={handleOptionChange}
-                  />
-                  You Are the Light That Guides Me Through My Darkest Days.
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="Custom Text"
-                    value="custom"
-                    onChange={handleOptionChange}
-                  />
-                  Custom Text
-                </label>
-              </div>
-              {/* Show the custom input field if "Custom Text" is selected */}
-              <div className="pb-10">
-                {customTextEnabled && (
-                  <input
-                    className="w-full p-3 border border-gray-300 rounded-md"
-                    type="text"
-                    placeholder="Enter your custom message here"
-                    value={customInput}
-                    onChange={handleCustomInputChange}
-                  />
-                )}
-              </div>
-              <hr className="my-4 border-t border-gray-300" />
-
-              <label
-                htmlFor={"file"}
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                {"Upload image: "}
-              </label>
-              {/* <p className="text-lg text-gray-700 font-medium mt-2 text-center">
-                Upload image
-              </p> */}
-              <div className="flex flex-row gap-2 justify-center ">
-                <div className="relative w-24 h-24 rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://images.pexels.com/photos/1464565/pexels-photo-1464565.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    }
-                    alt={`Image guide 1`}
-                    className="object-cover w-full h-full"
-                    width={400}
-                    height={400}
-                    unoptimized
-                  />
-                  <button
-                    type="button"
-                    className="absolute bottom-2 right-10 bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="size-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m4.5 12.75 6 6 9-13.5"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <p className="text-md text-gray-500 font-medium mt-2 text-center mb-4">
-                ** Please make sure that the subjects are at the center of the
-                frame and away from the camera. **
-              </p>
-              <input
-                id="file"
-                type="file"
-                disabled={images.length >= 1}
-                accept="image/*"
-                onChange={handleUpload}
-                className="mb-10 p-2 bg-white border border-gray-300 rounded-md w-full"
-              />
-              {uploading && (
-                <p className="text-blue-600 text-center">
-                  Uploading images... Please wait
-                </p>
-              )}
-              {images.length > 0 && (
-                <p className="text-red-600 text-center mb-2">
-                  {`image uploaded`}
-                </p>
-              )}
-              {images.length > 0 && (
-                <div className="mb-4">
-                  <ul className="flex flex-wrap gap-4 overflow-x-auto">
-                    {images.map((url, index) => (
-                      <li
-                        key={index}
-                        className="relative w-24 h-24 rounded-md overflow-hidden"
-                      >
-                        <Image
-                          src={transformLink(url)}
-                          alt={`Uploaded Image ${index}`}
-                          className="object-cover w-full h-full"
-                          width={400}
-                          height={400}
-                          unoptimized
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveImage(index)}
-                          className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                        >
-                          X
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {images.length > 1 && (
-                <p className="text-red-600 text-sm text-center">
-                  You have exceeded the limit of 1 images.
-                </p>
-              )}
-              <hr className="my-4 border-t border-gray-300" />
-
-              <label
-                htmlFor={"Necklace"}
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                {"Necklace: "}
-              </label>
-              <div className="flex flex-row gap-4 mb-12">
-                <div className="flex flex-col justify-center items-center ">
-                  <label>
-                    <input
-                      type="radio"
-                      name="Necklace"
-                      value="Interlocked Hearts"
-                      onChange={handleCustomizationChange}
-                      defaultChecked
-                    />
-                    <Image
-                      src={
-                        "https://jeweltine.s3.us-east-1.amazonaws.com/misc/interlocked_hearts.jpg"
-                      }
-                      alt={`Interlocked Hearts Necklace Image`}
-                      className="w-24 h-24 object-cover rounded-md"
-                      width={400}
-                      height={400}
-                    />
-                    Interlocked Hearts
-                  </label>
-                </div>
-                <div className="flex flex-col justify-center items-center">
-                  <label>
-                    <input
-                      type="radio"
-                      name="Necklace"
-                      value="Forever Love"
-                      onChange={handleCustomizationChange}
-                    />
-                    <Image
-                      src={
-                        "https://jeweltine.s3.us-east-1.amazonaws.com/misc/forever_love.jpeg"
-                      }
-                      alt={`Forever Love Necklace`}
-                      className="w-24 h-24 object-cover rounded-md"
-                      width={400}
-                      height={400}
-                    />
-                    Forever Love
-                  </label>
-                </div>
-              </div>
-              <hr className="my-4 border-t border-gray-300" />
-
-              <label
-                htmlFor={"Color"}
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                {"Color: "}
-              </label>
-              <div className="flex flex-row gap-4 mb-8">
-                <div className="flex flex-col justify-center items-center">
-                  <label>
-                    <input
-                      type="radio"
-                      name="Color"
-                      value="Gold"
-                      onChange={handleCustomizationChange}
-                      defaultChecked
-                    />
-                    18K Gold
-                  </label>
-                </div>
-                <div className="flex flex-col justify-center items-center">
-                  <label>
-                    <input
-                      type="radio"
-                      name="Color"
-                      value="Silver"
-                      onChange={handleCustomizationChange}
-                    />
-                    14K Silver
-                  </label>
-                </div>
-              </div>
-              <hr className="my-4 border-t border-gray-300" />
-
-              <label
-                htmlFor={"Box"}
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                {"Box: "}
-              </label>
-              <div className="flex flex-row gap-4 mb-8">
-                <div className="flex flex-col justify-center items-center">
-                  <label>
-                    <input
-                      type="radio"
-                      name="Box"
-                      value="Standard Box"
-                      onChange={(e) => {
-                        handleCustomizationChange(e);
-                        setCustomization((prev) => ({ ...prev, Price: 49 }));
-                      }}
-                      defaultChecked
-                    />
-                    <Image
-                      src={
-                        "https://jeweltine.s3.us-east-1.amazonaws.com/misc/standard_box.png"
-                      }
-                      alt={`Interlocked Hearts Necklace Image`}
-                      className="w-24 h-24 object-cover rounded-md"
-                      width={400}
-                      height={400}
-                    />
-                    Standard Box
-                  </label>
-                </div>
-                <div className="flex flex-col justify-center items-center">
-                  <label>
-                    <input
-                      type="radio"
-                      name="Box"
-                      value="Luxury Wooden Box"
-                      onChange={(e) => {
-                        handleCustomizationChange(e);
-                        setCustomization((prev) => ({ ...prev, Price: 69 }));
-                      }}
-                    />
-                    <Image
-                      src={
-                        "https://jeweltine.s3.us-east-1.amazonaws.com/misc/luxury_wooden_box.png"
-                      }
-                      alt={`Interlocked Hearts Necklace Image`}
-                      className="w-24 h-24 object-cover rounded-md"
-                      width={400}
-                      height={400}
-                    />
-                    Luxury Wooden Box (+$20)
-                  </label>
-                </div>
-              </div>
-              <button
-                id="form-btn-2"
-                type="button"
-                disabled={
-                  images.length === 0 ||
-                  images.length > 1 ||
-                  !customization["Name 1"] ||
-                  !customization["Name 2"] ||
-                  !customization["Custom Text"] ||
-                  !customization["Necklace"] ||
-                  !customization["Color"]
-                }
-                onClick={() => {
-                  setStep(2);
-                  handleScrollToSection2();
-                }}
-                className="w-full py-3 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-gray-400"
-              >
-                Next: Shipping Details
-              </button>
-            </fieldset>
-          )}
-          {/* Step 2: Upload Images */}
           <div ref={section2Ref}></div>
-          {step >= 2 && (
+          {step >= 1 && (
             <fieldset className="p-6 border-2 border-gray-300 rounded-lg shadow-lg bg-white">
               <legend
                 className="text-2xl font-semibold text-center  mb-4"
@@ -694,16 +299,7 @@ export default function OrderForm({ handleScrollToSection }) {
                   />
                 </div>
               ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setStep(1);
-                  handleScrollToSection1();
-                }}
-                className="w-full py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 mb-2"
-              >
-                Back: Upload Images
-              </button>
+
               <button
                 id="form-btn-1"
                 type="button"
@@ -745,15 +341,23 @@ export default function OrderForm({ handleScrollToSection }) {
                 {[
                   {
                     title:
-                      "Upgrade Your Order: Order 2 units for both of you!❤️",
+                      `💌 Upgrade Your Order 💌\n
+Double the love, double the joy!`,
+                    description: `Why stop at one when you can share the happiness?
+
+No matter how far you are from each other, some things are meant to be shared. Ordering 2 units means staying connected in a truly special way.
+
+Picture this: every time they use it, they’ll think of you. And the same from your side. A simple way to stay connected, no matter where life takes you both.
+
+💖 Treat yourself and someone you care about. Order 2 units today and let the love multiply!`
                   },
                 ].map((orderBump, index) => (
                   <div
                     key={index}
-                    className="relative flex items-center space-x-4 p-4 border border-gray-300 rounded-lg shadow-md bg-red-50 hover:bg-red-100 transition"
+                    className="relative flex items-start space-x-4 p-4 border border-gray-300 rounded-lg shadow-md bg-red-50 hover:bg-red-100 transition"
                   >
                     {/* Animated Arrow */}
-                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute left-0 top-8 transform -translate-y-1/2">
                       <div className="animate-ping bg-yellow-500 rounded-full w-4 h-4">
                         <Image
                           src="/formArrow.svg" // Change this to your image path
@@ -769,19 +373,35 @@ export default function OrderForm({ handleScrollToSection }) {
                       type="checkbox"
                       id={`order-bump-${index}`}
                       onChange={(e) => {
-                        setCustomization((prev) => ({
-                          ...prev,
-                          quantity: prev.quantity === 1 ? 2 : 1,
-                        }));
+                        product.quantity === 1
+                          ? setProduct((prev) => ({
+                            ...prev,
+                            price: 99.9,
+                            quantity: 2,
+                          }))
+                          : setProduct((prev) => ({
+                            ...prev,
+                            price: 59.95,
+                            quantity: 1,
+                          }));
                       }}
-                      className="h-5 w-5 flex-shrink-0 border-gray-300 rounded"
+                      className="h-5 w-5 flex-shrink-0 mt-2 border-gray-300 rounded"
                     />
-                    <div className="flex flex-col md:flex-row items-center space-x-4">
-                      <div className="text-sm">
+                    <div className="flex flex-col md:flex-row items-start space-x-4">
+                      <div className="text-md">
                         <h4 className="font-semibold">
                           {orderBump.title} At $20 OFF
                         </h4>
-                        <p className="text-gray-600">{orderBump.description}</p>
+                        <p className="text-gray-600 mt-2">Why stop at one when you can share the happiness?
+                          <br />
+                          <br />
+                          💖 Treat yourself and someone you care about. Order 2 units today and let the love multiply!
+
+                          <br />
+                          <br />
+
+                          A simple way to stay connected, no matter where life takes you both.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -793,11 +413,23 @@ export default function OrderForm({ handleScrollToSection }) {
                 {/* List each product */}
                 <div key={1} className="flex justify-between text-lg">
                   <span>
-                    {customization.Necklace}{" "}
-                    {`(Qty: ${customization.quantity})`}
+                    {`Funny `}
+                    {pathname}{" "}
+                    {` Outdoors Valentine's Day - Forever Love Necklace`}{" "}
                   </span>
-                  <span>${customization.Price}</span>
+                  <span>${59.95}</span>
                 </div>
+
+                {/* Total Amount */}
+                {
+                  <div
+                    className="flex justify-between text-xl font-bold "
+                    style={{ color: primaryFontColor }}
+                  >
+                    <span>Quantity:</span>
+                    <span>{product.quantity}</span>
+                  </div>
+                }
 
                 {/* Total Amount */}
                 <div
@@ -805,11 +437,13 @@ export default function OrderForm({ handleScrollToSection }) {
                   style={{ color: primaryFontColor }}
                 >
                   <span>Total Amount:</span>
-                  <span>
-                    $
-                    {customization.Price * customization.quantity -
-                      (customization.quantity === 2 ? 20 : 0)}
-                  </span>
+                  <span>{product.quantity === 2 ? <p className="line-through font-normal">$199.9</p> : ""} ${product.price}</span>
+                </div>
+                <div
+                  className="flex justify-between text-xl font-bold "
+                  style={{ color: primaryFontColor }}
+                >
+                  <span>{product.quantity === 2 ? <p className=" font-normal">You just saved $20.</p> : ""}</span>
                 </div>
               </div>
 
@@ -825,10 +459,7 @@ export default function OrderForm({ handleScrollToSection }) {
                 Back: Shipping Details
               </button>
               <PayPalButton
-                amount={(
-                  customization.Price * customization.quantity -
-                  (customization.quantity === 2 ? 20 : 0)
-                ).toFixed(2)}
+                amount={product.price}
                 onFormSubmit={handleSubmit}
                 metaCheckout={metaCheckout}
               />

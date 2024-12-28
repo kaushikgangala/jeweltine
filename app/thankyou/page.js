@@ -11,27 +11,23 @@ const ThankYouPage = () => {
   useEffect(() => {
     async function metaPurchaseEvent() {
       const customer = JSON.parse(localStorage.getItem("customer"));
-      const customization = JSON.parse(localStorage.getItem("customization"));
+      const product = JSON.parse(localStorage.getItem("product"));
 
       if (customer) setCustomerData(customer);
-      if (customization) setProductData(customization);
+      if (product) setProductData(product);
 
       await fetch("/api/meta/purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          value: customization
-            ? (customization.Price * customization.quantity).toFixed(2)
-            : 0,
-          quantity: customization?.quantity || 0,
+          value: product?.quantity === 2 ? 99.9 : product?.price,
+          quantity: product?.quantity || 0,
           email: customer?.email || "",
           phone: customer?.phone || "",
           fbc: sessionStorage.getItem("_fbc"),
           fbp: sessionStorage.getItem("_fbp"),
-          totalAmount: customization
-            ? (customization.Price * customization.quantity).toFixed(2)
-            : 0,
-          qty: customization?.quantity || 0,
+          totalAmount: product?.quantity === 2 ? 99.9 : product?.price,
+          qty: product?.quantity,
         }),
       });
     }
@@ -109,30 +105,30 @@ const ThankYouPage = () => {
                 <div className="flex items-center justify-between border-b border-gray-300 pb-3">
                   <div>
                     <p className="text-gray-700">
-                      <strong>Product:</strong> {productData.Necklace}
+                      <strong>Product:</strong> {productData.name}
                     </p>
                     <p className="text-gray-700">
                       <strong>Quantity:</strong> {productData.quantity}
                     </p>
                   </div>
                   <p className="text-lg font-medium text-gray-800">
-                    ${productData.Price}
+                    ${productData.price}
                   </p>
                 </div>
               </div>
               <div className="text-right mt-4">
                 <p className="text-xl font-bold ">
                   Total: $
-                  {productData.quantity === 1
-                    ? productData.Price
-                    : (productData.Price * productData.quantity - 20).toFixed(
-                        2
-                      )}
+                  {productData.quantity === 2 ? 99.9 : productData.price}
                 </p>
               </div>
             </div>
           )}
 
+          <div className="text-center mt-6">
+            <p className="text-gray-600">Please check your email inbox for the order confirmation in the primary or spam sections.</p>
+
+          </div>
           {/* Call to Action */}
           <div className="text-center mt-6">
             <p className="text-gray-600">Have questions about your order?</p>

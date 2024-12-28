@@ -90,7 +90,7 @@ const Stats = () => {
         </svg>
 
         <p className="text-md font-semibold text-red-600">
-          {Math.floor(atc)} people have started their checkout right now!
+          {Math.floor(atc)} people have started their checkout!
         </p>
       </div>
 

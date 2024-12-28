@@ -9,6 +9,7 @@ module.exports = {
       "s3.amazonaws.com",
       "s3.us-east-1.amazonaws.com",
       "google.com",
+      "cdn.shineon.com",
     ],
     remotePatterns: [
       {

@@ -52,11 +52,10 @@ export default function OrdersPage() {
         {orders.map((order) => (
           <div
             key={order._id}
-            className={`p-6 rounded-lg shadow-lg ${
-              order.completed
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-white hover:shadow-xl"
-            }`}
+            className={`p-6 rounded-lg shadow-lg ${order.completed
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-white hover:shadow-xl"
+              }`}
           >
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">
               Order ID: {order._id}
@@ -66,9 +65,6 @@ export default function OrdersPage() {
             </p>
             <p className="text-lg text-gray-700 mb-2">
               <strong>Email:</strong> {order.customer.email}
-            </p>
-            <p className="text-lg text-gray-700 mb-4">
-              <strong>Images folder:</strong> {order.imagesFolder}
             </p>
             <p className="text-lg text-gray-700 mb-4">
               <strong>Address:</strong> {order.customer.street},{" "}
@@ -82,13 +78,13 @@ export default function OrdersPage() {
             <ul className="list-disc list-inside mb-4">
               {/* {order.products.map((product, index) => ( */}
               <li className="text-gray-700">
-                Product - {order.customization.Necklace}
+                Product - {order.product.name}
               </li>
               <li className="text-gray-700">
-                Qty - {order.customization.quantity}
+                Qty - {order.product.quantity}
               </li>
               <li className="text-gray-700">
-                Price - {order.customization.Price}
+                Total - {order.product.price}
               </li>
               {/* ))} */}
             </ul>
