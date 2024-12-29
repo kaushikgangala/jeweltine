@@ -2,10 +2,10 @@
 
 
 
-import DiscountCounter from "@/components/Counter";
-import Footer from "@/components/Footer";
-import ProductDescription from "@/components/ProductDescription";
-import ProductGrid from "@/components/Products";
+import DiscountCounter from "../components/Counter";
+import Footer from "../components/Footer";
+import ProductDescription from "../components/ProductDescription";
+import ProductGrid from "../components/Products";
 import Image from "next/image";
 import { useRef } from "react";
 

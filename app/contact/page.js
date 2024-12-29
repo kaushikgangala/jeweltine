@@ -1,6 +1,6 @@
 // app/contact/page.js
 
-import Footer from "@/components/Footer";
+import Footer from "../../components/Footer";
 
 const Contact = () => {
   return (
