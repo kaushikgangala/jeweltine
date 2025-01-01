@@ -2,7 +2,7 @@
 
 
 
-import DiscountCounter from "../components/Counter";
+import DiscountCounter from "../components/counter";
 import Footer from "../components/Footer";
 import ProductDescription from "../components/ProductDescription";
 import ProductGrid from "../components/Products";
