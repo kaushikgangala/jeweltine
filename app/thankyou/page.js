@@ -1,6 +1,6 @@
 "use client";
 
-import Footer from "@/components/Footer";
+import Footer from "../../components/Footer";
 import { primaryFontColor } from "@/utils/styles";
 import { useEffect, useState } from "react";
 

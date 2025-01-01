@@ -3,15 +3,13 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
-
-
 import { products } from "@/constants/products";
+import DiscountCounter from "../../components/Counter";
+import OrderForm from "../../components/Form";
+import ProductDescription from "../../components/ProductDescription";
+import Footer from "../../components/Footer";
+import ProductDetails from "../../components/ProductDetails";
 
-import DiscountCounter from "@/components/Counter";
-import OrderForm from "@/components/Form";
-import ProductDetails from "@/components/ProductDetails";
-import ProductDescription from "@/components/ProductDescription";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   const pathname = usePathname().split("/").join("")

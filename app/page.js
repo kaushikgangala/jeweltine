@@ -1,16 +1,15 @@
 "use client";
 
-import { Caveat } from "next/font/google";
 
 
+import DiscountCounter from "../components/Counter";
+import Footer from "../components/Footer";
+import ProductDescription from "../components/ProductDescription";
+import ProductGrid from "../components/Products";
 import Image from "next/image";
 import { useRef } from "react";
 
-import DiscountCounter from "@/components/Counter";
-import ProductDescription from "@/components/ProductDescription";
-import ProductGrid from "@/components/Products";
-import Footer from "@/components/Footer";
-import { products } from "@/constants/products";
+
 
 export default function Home() {
   const sectionRef = useRef(null);
