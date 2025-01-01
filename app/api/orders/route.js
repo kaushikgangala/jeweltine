@@ -27,14 +27,14 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const order = validateOrder(body);
+    // const order = validateOrder(body);
 
     // Attach the images folder URL
 
     const client = await clientPromise;
     const db = client.db("jeweltine");
 
-    const result = await db.collection("orders").insertOne(order);
+    const result = await db.collection("orders").insertOne(body);
 
     return new Response(
       JSON.stringify({
