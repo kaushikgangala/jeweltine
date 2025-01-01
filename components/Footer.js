@@ -1,5 +1,6 @@
 // app/footer.js
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -20,12 +21,12 @@ const Footer = () => {
         Copyright &copy; {new Date().getFullYear()} Jeweltine. All rights
         reserved.
         <div className="space-x-4 flex flex-col md:flex-row gap-2  pb-2">
-          <a href="/terms" className="text-sm ">
+          <Link href="/terms" className="text-sm ">
             Terms & Conditions
-          </a>
-          <a href="/contact" className="text-sm ">
+          </Link>
+          <Link href="/contact" className="text-sm ">
             Contact Us
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

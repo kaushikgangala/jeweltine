@@ -1,6 +1,7 @@
 // "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TestimonialsGrid({
   testimonials,
@@ -16,7 +17,7 @@ export default function TestimonialsGrid({
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
         {testimonials.map((testimonial, index) => (
-          <a
+          <Link
             key={index}
             href={testimonial.link}
             target="_blank"
@@ -35,7 +36,7 @@ export default function TestimonialsGrid({
               <p className="text-white text-center px-4">{testimonial.name}</p>
             </div> */}
             </div>
-          </a>
+          </Link>
         ))}
       </div>
       <button

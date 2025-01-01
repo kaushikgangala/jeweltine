@@ -1,5 +1,6 @@
 // app/contact/page.js
 
+import Link from "next/link";
 import Footer from "../../components/Footer";
 
 const Contact = () => {
@@ -12,12 +13,12 @@ const Contact = () => {
           </h1>
           <p className="text-lg text-gray-700 text-center">
             You can reach us via email at{" "}
-            <a
+            <Link
               href="mailto:contact.jeweltine@gmail.com"
               className="text-blue-500 hover:underline"
             >
               contact.jeweltine@gmail.com
-            </a>
+            </Link>
           </p>
         </div>
         <Footer />
