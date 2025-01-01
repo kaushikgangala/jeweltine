@@ -2,6 +2,7 @@
 
 import Footer from "@/components/Footer";
 import { primaryFontColor } from "@/utils/styles";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const ThankYouPage = () => {
@@ -136,13 +137,13 @@ const ThankYouPage = () => {
                     {/* Call to Action */}
                     <div className="text-center mt-6">
                         <p className="text-gray-600">Have questions about your order?</p>
-                        <a
+                        <Link
                             href="/contact"
                             className="mt-2 inline-block px-6 py-2 rounded-md  text-white font-semibold  transition duration-200"
                             style={{ backgroundColor: "#ff0084" }}
                         >
                             Contact Support
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
