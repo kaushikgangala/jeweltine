@@ -58,7 +58,6 @@ export default function Home() {
               {/* Product Title */}
               <ProductDetails
                 handleScrollToSection={handleScrollToSection}
-                images={[]}
               />
             </div>
 

@@ -99,7 +99,7 @@ export default function OrderForm() {
     }
 
     // shineon
-    const shineon_res = await fetch("https://api.shineon.com/v1/orders", {
+    await fetch("https://api.shineon.com/v1/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,8 +129,6 @@ export default function OrderForm() {
         },
       }),
     });
-    const data = await shineon_res.json()
-    console.log(data)
 
     const currentDate = new Date();
     const deliveryDate = new Date(currentDate);

@@ -84,4 +84,19 @@ export const products = {
     sku: "SO-14020186",
     path: "/outdoors"
   },
+  custom: {
+    images: [
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/2.png",
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/1.png",
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/3.png",
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/4.png",
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/5.png",
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/6.png",
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/7.png",
+      "https://jeweltine.s3.us-east-1.amazonaws.com/site-assets/custom_product_images/8.png",
+    ],
+    product_id: "1548951379",
+    sku: "SO-14020186",
+    path: "/custom"
+  },
 };
